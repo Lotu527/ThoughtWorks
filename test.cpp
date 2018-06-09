@@ -38,9 +38,46 @@ void TestWorldShow()
 
 }
 
+void TestCalculateTheNextStateOfWorld()
+{
+    int width=10;
+    int height=10;
+    int cellsX=3;
+    int cellsY=3;
+    int cellsX1=0;
+    int cellsY1=0;
+    int cellsX2=9;
+    int cellsY2=9;
+    bool ** map = new bool*[width];
+    for(int i=0;i<width;i++){
+        map[i] = new bool[height];
+        // map[i][3]=1;
+        // map[i][0]=1;
+        // // map[i][1]=1;
+        // map[i][height-1]=1;
+        // map[i][height-2]=1;
+        for(int j=0;j<height;j++)
+        if((i == j) || (i+j == 9)){
+            map[i][j] = 1;
+        }
+    }
+    
+
+    
+    World world(width,height,map);
+
+    world.show();
+
+    assert(world.nextState(cellsX,cellsY)==1);    
+    assert(world.nextState(cellsX1,cellsY1)==0);
+    assert(world.nextState(cellsX2,cellsY2)==0);
+    world.show(width,height,world.nextState());
+
+}
 int main()
 {
-    // TestInitWorld();
+    TestInitWorld();
     TestWorldShow();
+    TestCalculateTheNextStateOfWorld();
     return 0;
 }
