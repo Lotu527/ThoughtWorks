@@ -72,8 +72,8 @@ void TestCalculateTheNextStateOfWorld()
 
 void TestAnimation()
 {
-    int width = 10;
-    int height = 10;
+    int width = 30;
+    int height = 30;
     int rate = 1000;
     bool ** map = new bool*[width];
     for(int i=0;i<width;i++){
@@ -82,7 +82,7 @@ void TestAnimation()
         if((i == j) || (i+j == width-1)){
             map[i][j] = 1;
         }
-    }
+    }   
 
     World world(width,height,map);
     world.animation(rate);
@@ -94,5 +94,6 @@ int main()
     TestInitWorld();
     TestWorldShow();
     TestCalculateTheNextStateOfWorld();
+    TestAnimation();
     return 0;
 }

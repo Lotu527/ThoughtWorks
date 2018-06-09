@@ -1,5 +1,6 @@
 #include<cstdio>
-
+#include<unistd.h>
+#include<stdlib.h>
 const char LIVING = 'o';
 const char DEATH = ' ';
 
@@ -84,12 +85,30 @@ public:
         }
         return mapNext;
     }
-
-
+    void clear(){
+        system("clear");
+    }
+    void animation(int rate = 1 , int times = 50){
+        bool** map=NULL;
+        while(times--){
+            clear();
+            map = nextState();
+            show(_width,_height,map);
+            usleep(rate*1000);
+            this->free();
+            _map = map;
+        }
+    }
 
 private:
     int _width;
     int _height;
     bool ** _map;
 
+    void free(){
+        for(int i=0;i<_width;i++)
+            delete[] _map[i];
+        delete[] _map;
+        _map=NULL;
+    }
 };
