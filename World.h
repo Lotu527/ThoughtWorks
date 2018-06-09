@@ -1,10 +1,4 @@
-#include<cstdio>
-#include<unistd.h>
-#include<stdlib.h>
 #include<cstring>
-
-const char LIVING = 'o';
-const char DEATH = ' ';
 
 class World
 {
@@ -38,22 +32,6 @@ public:
 
     bool **map(){
         return _map;
-    }
-
-    void show(int width, int height, bool **map){
-        for(int row=0; row<width; row++){
-            for(int cow=0; cow<height; cow++){
-                if(map[row][cow])
-                    printf("%c",LIVING);
-                else
-                    printf("%c",DEATH);
-            }
-            printf("\n");
-        }
-    }
-
-    void show(){
-        show(_width,_height,_map);
     }
 
     int livingCellsNums(int cellsX,int cellsY){
@@ -97,29 +75,25 @@ public:
         }
         return mapNext;
     }
-    void clear(){
-        system("clear");
-    }
-    void msleep(int urate){
-        usleep(urate*1000);
-    }
-    void animationEnd(){
-        printf("世界和平！\n");
-    }
-    void animation(int mrate = 1000){
-        show(_width,_height,_map);
-        bool** map=nextState();
-        while(!cmp(map,_map)){
-            msleep(mrate);
-            clear();
-            show(_width,_height,map);
-            free();
-            _map = map;
-            map = nextState();
+    
+    bool cmp(bool** now,bool** next){
+        for(int cow=0;cow<_width;cow++){
+            if(memcmp(now[cow],next[cow],_height))
+                return false;
         }
-        animationEnd();
+        return true;
     }
 
+    bool** next(){
+        bool **next = nextState();
+        if(cmp(next,_map)){
+            free();
+            return NULL;
+        }
+        free();
+        _map = next;
+        return _map;
+    }
 private:
     int _width;
     int _height;
@@ -132,11 +106,5 @@ private:
         _map=NULL;
     }
 
-    bool cmp(bool** now,bool** next){
-        for(int cow=0;cow<_width;cow++){
-            if(memcmp(now[cow],next[cow],_height))
-                return false;
-        }
-        return true;
-    }
+    
 };

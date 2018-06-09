@@ -1,5 +1,5 @@
 #include<assert.h>
-#include "World.h"
+#include "Display.h"
 void TestInitWorld()
 {
     int width=100;
@@ -33,8 +33,8 @@ void TestWorldShow()
         }
     }
 
-    World worldshow(width, height, map);
-    worldshow.show();
+    // World worldshow(width, height, map);
+    // worldshow.show();
 
 }
 
@@ -49,51 +49,51 @@ void TestCalculateTheNextStateOfWorld()
     int cellsX2=9;
     int cellsY2=9;
     bool ** map = new bool*[width];
-    for(int i=0;i<width;i++){
-        map[i] = new bool[height];
-        for(int j=0;j<height;j++)
-        if((i == j) || (i+j == 9)){
-            map[i][j] = 1;
+    for(int row=0;row<width;row++){
+        map[row] = new bool[height];
+        for(int cow=0;cow<height;cow++)
+        if((row == cow) || (row+cow == width-1)){
+            map[row][cow] = 1;
         }
-    }
+    }   
     
 
     
     World world(width,height,map);
 
-    world.show();
+    // world.show();
 
     assert(world.nextState(cellsX,cellsY)==1);    
     assert(world.nextState(cellsX1,cellsY1)==0);
     assert(world.nextState(cellsX2,cellsY2)==0);
-    world.show(width,height,world.nextState());
+    // world.show(width,height,world.nextState());
 
 }
 
 void TestAnimation()
 {
-    int width = 30;
-    int height = 30;
+    int width = 10;
+    int height = 10;
     int rate = 1000;
     bool ** map = new bool*[width];
-    for(int i=0;i<width;i++){
-        map[i] = new bool[height];
-        for(int j=0;j<height;j++)
-        if((i == j) || (i+j == width-1)){
-            map[i][j] = 1;
+    for(int row=0;row<width;row++){
+        map[row] = new bool[height];
+        for(int cow=0;cow<height;cow++)
+        if((row == cow) || (row+cow == width-1)){
+            map[row][cow] = 1;
         }
     }   
-
-    World world(width,height,map);
+    World *w = new World(width,height,map);
+    Display world(w);
     world.animation(rate);
 
 }
 
 int main()
 {
-    TestInitWorld();
-    TestWorldShow();
-    TestCalculateTheNextStateOfWorld();
+    // TestInitWorld();
+    // TestWorldShow();
+    // TestCalculateTheNextStateOfWorld();
     TestAnimation();
     return 0;
 }
