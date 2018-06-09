@@ -89,9 +89,8 @@ void TestCalculateTheNextStateOfWorld()
 
 void TestAnimation()
 {
-    int width = 10;
-    int height = 10;
-    int rate = 1000;
+    int width = 30;
+    int height = 30;
     bool ** map = new bool*[width];
     for(int row=0;row<width;row++){
         map[row] = new bool[height];
@@ -101,13 +100,13 @@ void TestAnimation()
         }
     }   
 
-    World *w = new World(width,height,map);
-    Display world(w);
-    world.animation(rate);
+    World *world = new World(width,height,map);
+    Display display(world);
+    display.animation();
 
 }
 
-void TestDesplayInput()
+void TestDisplayInput()
 {
     freopen("data.in","r",stdin);
     int width;
@@ -133,15 +132,19 @@ void TestDesplayInput()
         }
     }
     display.animation();
-    // freopen("data.out","w",stdout);
+    
 }
-
+void TestAdjustRate()
+{
+    TestAnimation();
+} 
 int main()
 {
-    // TestInitWorld();
-    // TestWorldShow();
-    // TestCalculateTheNextStateOfWorld();
+    TestInitWorld();
+    TestWorldShow();
+    TestCalculateTheNextStateOfWorld();
     // TestAnimation();
-    TestDesplayInput();
+    // TestDisplayInput();
+    TestAdjustRate();
     return 0;
 }

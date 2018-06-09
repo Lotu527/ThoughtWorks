@@ -1,5 +1,6 @@
+#ifndef WORLDH
+#define WORLDH
 #include<cstring>
-
 class World
 {
 public:
@@ -105,6 +106,6 @@ private:
         delete[] _map;
         _map=NULL;
     }
-
     
 };
+#endif

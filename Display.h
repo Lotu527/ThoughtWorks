@@ -1,17 +1,20 @@
+#ifndef DISPLAYH
+#define DISPLAYH
 #include "World.h"
+#include "KeyBoard.h"
 #include<cstdio>
 #include<unistd.h>
 #include<stdlib.h>
-
+#include<signal.h>
 const char LIVING = 'o';
 const char DEATH = ' ';
-
 class Display
 {
 public:
     Display(World* world)
     {
         _world = new World(world->width(),world->height(),world->map());
+        DISPLAY_RATE = 1000;
     }
 
     Display(const char* file){
@@ -32,6 +35,7 @@ public:
             }
         }
         _world = new World(width,height,map);
+        DISPLAY_RATE = rate;
     }
 
     void show(int width, int height, bool **map){
@@ -45,8 +49,6 @@ public:
             printf("\n");
         }
     }
-
-    
 
     void show()
     {
@@ -62,12 +64,17 @@ public:
     void animationEnd(){
         printf("世界和平！\n");
     }
-    void animation(int mrate = 1000){
+    
+    void animation(){
+        listen();
         clear();
         show();
         bool** map=NULL;
         while((map = _world->next())!=NULL){
-            msleep(mrate);
+            while(DISPLAY_STOP){
+                msleep(DISPLAY_RATE);
+            }
+            msleep(DISPLAY_RATE);
             clear();
             show();
         }
@@ -79,3 +86,4 @@ public:
 private:
     World* _world;
 };
+#endif
