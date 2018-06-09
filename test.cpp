@@ -17,6 +17,21 @@ void TestInitWorld()
             assert(map[i][j] == world.map()[i][j]);
     }
 }
+
+void TestWorldShow()
+{
+    int width = 100;
+    int height = 100;
+    bool ** map = new bool*[width];
+    for(int i=0;i<width;i++){
+        map[i] = new bool[height];
+    }
+
+    World worldshow(int width, int height, bool **map);
+    worldshow.show();
+
+}
+
 int main()
 {
     TestInitWorld();
