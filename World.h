@@ -1,6 +1,8 @@
 #include<cstdio>
 #include<unistd.h>
 #include<stdlib.h>
+#include<cstring>
+
 const char LIVING = 'o';
 const char DEATH = ' ';
 
@@ -11,16 +13,20 @@ public:
         _width = width;
         _height = height;
         _map = new bool*[width];
-        for(int i=0;i<height;i++){
-            _map[i] = new bool[height];
+        for(int row=0;row<height;row++){
+            _map[row] = new bool[height];
         }
 
-        for(int i=0; i<width; i++){
-            for(int j=0; j<height; j++){
-                _map[i][j] = map[i][j];
+        for(int row=0; row<width; row++){
+            for(int cow=0; cow<height; cow++){
+                _map[row][cow] = map[row][cow];
             }
         }
     } 
+
+    ~World(){
+        free();
+    }
 
     int width(){
         return _width;
@@ -35,9 +41,9 @@ public:
     }
 
     void show(int width, int height, bool **map){
-        for(int i=0;i<width;i++){
-            for(int j=0;j<height;j++){
-                if(map[i][j])
+        for(int row=0; row<width; row++){
+            for(int cow=0; cow<height; cow++){
+                if(map[row][cow])
                     printf("%c",LIVING);
                 else
                     printf("%c",DEATH);
@@ -50,22 +56,28 @@ public:
         show(_width,_height,_map);
     }
 
-    bool nextState(int cellsX, int cellsY){
-        
+    int livingCellsNums(int cellsX,int cellsY){
         int livingCellsNum = 0;
 
-        for(int i=0; i<3; i++){
-            for(int j=0; j<3; j++){
-                if(cellsX-1+i < 0 || cellsY-1+j < 0)
+        for(int row=0; row<3; row++){
+            for(int cow=0; cow<3; cow++){
+                if(cellsX-1+row < 0 || cellsY-1+cow < 0)
                     continue;
-                if(cellsX-1+i > _width-1 || cellsY-1+j > _height-1)
+                if(cellsX-1+row > _width-1 || cellsY-1+cow > _height-1)
                     continue;
-                if(i==1 && j==1)
+                if(row==1 && cow==1)
                     continue;
-                if(_map[cellsX-1+i][cellsY-1+j])
+                if(_map[cellsX-1+row][cellsY-1+cow])
                     livingCellsNum++;
             }
         }
+        return livingCellsNum;
+    }
+
+    bool nextState(int cellsX, int cellsY){
+        
+        int livingCellsNum = livingCellsNums(cellsX,cellsY);
+
         if( livingCellsNum == 2 ){
             return _map[cellsX][cellsY];
         }
@@ -77,10 +89,10 @@ public:
 
     bool ** nextState(){
         bool **mapNext = new bool*[_width];
-        for(int i=0;i<_width;i++){
-            mapNext[i] = new bool[_height];
-            for(int j=0; j< _height; j++){
-                mapNext[i][j] = nextState(i ,j);
+        for(int row=0; row<_width; row++){
+            mapNext[row] = new bool[_height];
+            for(int cow=0; cow< _height; cow++){
+                mapNext[row][cow] = nextState(row ,cow);
             }
         }
         return mapNext;
@@ -88,16 +100,24 @@ public:
     void clear(){
         system("clear");
     }
-    void animation(int rate = 1 , int times = 50){
-        bool** map=NULL;
-        while(times--){
+    void msleep(int urate){
+        usleep(urate*1000);
+    }
+    void animationEnd(){
+        printf("世界和平！\n");
+    }
+    void animation(int mrate = 1000){
+        show(_width,_height,_map);
+        bool** map=nextState();
+        while(!cmp(map,_map)){
+            msleep(mrate);
             clear();
-            map = nextState();
             show(_width,_height,map);
-            usleep(rate*1000);
-            this->free();
+            free();
             _map = map;
+            map = nextState();
         }
+        animationEnd();
     }
 
 private:
@@ -106,9 +126,17 @@ private:
     bool ** _map;
 
     void free(){
-        for(int i=0;i<_width;i++)
-            delete[] _map[i];
+        for(int row=0;row<_width;row++)
+            delete[] _map[row];
         delete[] _map;
         _map=NULL;
+    }
+
+    bool cmp(bool** now,bool** next){
+        for(int cow=0;cow<_width;cow++){
+            if(memcmp(now[cow],next[cow],_height))
+                return false;
+        }
+        return true;
     }
 };
