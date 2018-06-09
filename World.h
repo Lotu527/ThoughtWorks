@@ -1,3 +1,4 @@
+#include<cstdio>
 class World
 {
 public:
@@ -15,15 +16,33 @@ public:
             }
         }
     } 
+
     int width(){
         return _width;
     }
+
     int height(){
         return _height;
     }
 
     bool **map(){
         return _map;
+    }
+
+    void show(int width, int height, bool **map){
+        for(int i=0;i<width;i++){
+            for(int j=0;j<height;j++){
+                if(map[i][j])
+                    printf("%c",'o');
+                else
+                    printf(" ");
+            }
+            printf("\n");
+        }
+    }
+
+    void show(){
+        show(_width,_height,_map);
     }
 
 private:
