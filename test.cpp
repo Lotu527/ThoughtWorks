@@ -27,14 +27,20 @@ void TestWorldShow()
         map[i] = new bool[height];
     }
 
-    World worldshow(int width, int height, bool **map);
+    for(int i=0; i<width; i++){
+        for(int j=0; j<height; j++){
+            map[i][j] = 1;
+        }
+    }
+
+    World worldshow(width, height, map);
     worldshow.show();
 
 }
 
 int main()
 {
-    TestInitWorld();
-
+    // TestInitWorld();
+    TestWorldShow();
     return 0;
 }
