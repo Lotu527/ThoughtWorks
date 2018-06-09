@@ -51,11 +51,6 @@ void TestCalculateTheNextStateOfWorld()
     bool ** map = new bool*[width];
     for(int i=0;i<width;i++){
         map[i] = new bool[height];
-        // map[i][3]=1;
-        // map[i][0]=1;
-        // // map[i][1]=1;
-        // map[i][height-1]=1;
-        // map[i][height-2]=1;
         for(int j=0;j<height;j++)
         if((i == j) || (i+j == 9)){
             map[i][j] = 1;

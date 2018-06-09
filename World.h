@@ -1,4 +1,8 @@
 #include<cstdio>
+
+const char LIVING = 'o';
+const char DEATH = ' ';
+
 class World
 {
 public:
@@ -33,9 +37,9 @@ public:
         for(int i=0;i<width;i++){
             for(int j=0;j<height;j++){
                 if(map[i][j])
-                    printf("%c",'o');
+                    printf("%c",LIVING);
                 else
-                    printf(" ");
+                    printf("%c",DEATH);
             }
             printf("\n");
         }
@@ -55,37 +59,37 @@ public:
                     continue;
                 if(cellsX-1+i > _width-1 || cellsY-1+j > _height-1)
                     continue;
-
                 if(i==1 && j==1)
                     continue;
                 if(_map[cellsX-1+i][cellsY-1+j])
                     livingCellsNum++;
             }
         }
-
-        if((livingCellsNum < 2)||(livingCellsNum > 3))
-            return 0;
-        if(livingCellsNum == 3)
-            return 1;
-        if(livingCellsNum == 2)
+        if( livingCellsNum == 2 ){
             return _map[cellsX][cellsY];
-
+        }
+        if( livingCellsNum == 3 ){
+            return true;
+        }      
+        return false; 
     }
 
-    bool **nextState(){
+    bool ** nextState(){
         bool **mapNext = new bool*[_width];
         for(int i=0;i<_width;i++){
             mapNext[i] = new bool[_height];
             for(int j=0; j< _height; j++){
-                mapNext[i][j] = nextState(i ,j );
+                mapNext[i][j] = nextState(i ,j);
             }
         }
         return mapNext;
     }
 
 
+
 private:
     int _width;
     int _height;
     bool ** _map;
+
 };
