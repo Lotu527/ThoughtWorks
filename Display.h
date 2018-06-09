@@ -14,6 +14,26 @@ public:
         _world = new World(world->width(),world->height(),world->map());
     }
 
+    Display(const char* file){
+        freopen(file,"r",stdin);
+        int width;
+        int height;
+        int rate;
+        scanf("%d %d %d",&width,&height,&rate);
+        bool ** map = new bool*[width];
+        for(int row=0,tmp;row<width;row++){
+            map[row] = new bool[height];
+            for(int cow=0;cow<height;cow++){
+                scanf("%d",&tmp);
+                if(tmp)
+                    map[row][cow]=true;
+                else
+                    map[row][cow]=false;
+            }
+        }
+        _world = new World(width,height,map);
+    }
+
     void show(int width, int height, bool **map){
         for(int row=0; row<width; row++){
             for(int cow=0; cow<height; cow++){
@@ -25,6 +45,8 @@ public:
             printf("\n");
         }
     }
+
+    
 
     void show()
     {
@@ -50,6 +72,9 @@ public:
             show();
         }
         animationEnd();
+    }
+    World* world(){
+        return _world;
     }
 private:
     World* _world;

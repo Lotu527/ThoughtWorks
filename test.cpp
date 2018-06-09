@@ -1,5 +1,9 @@
 #include<assert.h>
 #include "Display.h"
+#include<fstream>
+#include<iostream>
+#include<cstdio>
+
 void TestInitWorld()
 {
     int width=100;
@@ -40,14 +44,14 @@ void TestWorldShow()
 
 void TestCalculateTheNextStateOfWorld()
 {
-    int width=10;
-    int height=10;
-    int cellsX=3;
-    int cellsY=3;
-    int cellsX1=0;
-    int cellsY1=0;
-    int cellsX2=9;
-    int cellsY2=9;
+    const int width=5;
+    const int height=5;
+    const int cellsX=3;
+    const int cellsY=3;
+    const int cellsX1=0;
+    const int cellsY1=0;
+    const int cellsX2=4;
+    const int cellsY2=4;
     bool ** map = new bool*[width];
     for(int row=0;row<width;row++){
         map[row] = new bool[height];
@@ -55,18 +59,31 @@ void TestCalculateTheNextStateOfWorld()
         if((row == cow) || (row+cow == width-1)){
             map[row][cow] = 1;
         }
-    }   
-    
+    }  
 
+    bool ** nextMap = new bool*[width];
+    for(int row=0;row<width;row++){
+        nextMap[row] = new bool[height];
+        for(int cow = 0;cow<height;cow++){
+            if(row>0 && row<width-1 && cow>0 && cow<height-1){
+                nextMap[row][cow]=1;
+            }
+        }
+    }
+    nextMap[2][2]=0;
+      
     
     World world(width,height,map);
-
-    // world.show();
 
     assert(world.nextState(cellsX,cellsY)==1);    
     assert(world.nextState(cellsX1,cellsY1)==0);
     assert(world.nextState(cellsX2,cellsY2)==0);
-    // world.show(width,height,world.nextState());
+    map=world.nextState();
+    for(int row=0;row<width;row++){
+        for(int cow = 0;cow<height;cow++){
+            assert(map[row][cow]==nextMap[row][cow]);
+        }
+    }
 
 }
 
@@ -83,10 +100,40 @@ void TestAnimation()
             map[row][cow] = 1;
         }
     }   
+
     World *w = new World(width,height,map);
     Display world(w);
     world.animation(rate);
 
+}
+
+void TestDesplayInput()
+{
+    freopen("data.in","r",stdin);
+    int width;
+    int height;
+    int rate;
+    scanf("%d %d %d",&width,&height,&rate);
+    bool ** map = new bool*[width];
+    for(int row=0,tmp;row<width;row++){
+        map[row] = new bool[height];
+        for(int cow=0;cow<height;cow++){
+            scanf("%d",&tmp);
+            if(tmp)
+                map[row][cow]=true;
+            else
+                map[row][cow]=false;
+        }
+    }
+    Display display("data.in");
+
+    for(int row=0;row<width;row++){
+        for(int cow=0;cow<height;cow++){
+            assert(map[row][cow]==display.world()->map()[row][cow]);
+        }
+    }
+    display.animation();
+    // freopen("data.out","w",stdout);
 }
 
 int main()
@@ -94,6 +141,7 @@ int main()
     // TestInitWorld();
     // TestWorldShow();
     // TestCalculateTheNextStateOfWorld();
-    TestAnimation();
+    // TestAnimation();
+    TestDesplayInput();
     return 0;
 }
