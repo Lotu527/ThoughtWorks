@@ -1,6 +1,8 @@
 #ifndef WORLDH
 #define WORLDH
 #include<cstring>
+#include<time.h>
+#include<cstdlib>
 class World
 {
 public:
@@ -103,12 +105,18 @@ private:
         delete[] _map;
         _map=NULL;
     }
-    void randWorld(int width,int height){
+    void randWorld(int width,int height,bool rand_init=false){
+        if(rand_init){
+            srand(time(NULL));
+        }
         _width = width;
         _height = height;
         _map = new bool*[width];
-        for(int row=0;row<height;row++){
+        for(int row=0;row<width;row++){
             _map[row] = new bool[height];
+            for(int cow = 0;cow<height;cow++){
+                _map[row][cow]=(bool)(rand()%2);
+            }
         }
     }
 };
