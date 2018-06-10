@@ -6,6 +6,7 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<signal.h>
+
 const char LIVING = 'o';
 const char DEATH = ' ';
 class Display
@@ -54,16 +55,6 @@ public:
     {
         show(_world->width(),_world->height(),_world->map());
     }
-
-    void clear(){
-        system("clear");
-    }
-    void msleep(int urate){
-        usleep(urate*1000);
-    }
-    void animationEnd(){
-        printf("世界和平！\n");
-    }
     
     void animation(){
         listen();
@@ -74,9 +65,10 @@ public:
             while(DISPLAY_STOP){
                 msleep(DISPLAY_RATE);
             }
-            msleep(DISPLAY_RATE);
             clear();
             show();
+            msleep(DISPLAY_RATE);
+            
         }
         animationEnd();
     }
@@ -85,5 +77,15 @@ public:
     }
 private:
     World* _world;
+
+    void clear(){
+        system("clear");
+    }
+    void msleep(int urate){
+        usleep(urate*1000);
+    }
+    void animationEnd(){
+        printf("世界和平！\n");
+    }
 };
 #endif

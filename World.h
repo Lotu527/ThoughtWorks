@@ -5,19 +5,16 @@ class World
 {
 public:
     World(int width, int height, bool **map){
-        _width = width;
-        _height = height;
-        _map = new bool*[width];
-        for(int row=0;row<height;row++){
-            _map[row] = new bool[height];
-        }
-
+        randWorld(width,height);
         for(int row=0; row<width; row++){
             for(int cow=0; cow<height; cow++){
                 _map[row][cow] = map[row][cow];
             }
         }
-    } 
+    }
+    World(int width,int height){
+        randWorld(width,height);
+    }
 
     ~World(){
         free();
@@ -106,6 +103,13 @@ private:
         delete[] _map;
         _map=NULL;
     }
-    
+    void randWorld(int width,int height){
+        _width = width;
+        _height = height;
+        _map = new bool*[width];
+        for(int row=0;row<height;row++){
+            _map[row] = new bool[height];
+        }
+    }
 };
 #endif

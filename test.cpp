@@ -89,8 +89,8 @@ void TestCalculateTheNextStateOfWorld()
 
 void TestAnimation()
 {
-    int width = 30;
-    int height = 30;
+    int width = 50;
+    int height = 100;
     bool ** map = new bool*[width];
     for(int row=0;row<width;row++){
         map[row] = new bool[height];
@@ -143,8 +143,8 @@ int main()
     TestInitWorld();
     TestWorldShow();
     TestCalculateTheNextStateOfWorld();
-    // TestAnimation();
+    TestAnimation();
     // TestDisplayInput();
-    TestAdjustRate();
+    // TestAdjustRate();
     return 0;
 }
