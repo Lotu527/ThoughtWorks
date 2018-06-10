@@ -144,7 +144,7 @@ int main()
     TestWorldShow();
     TestCalculateTheNextStateOfWorld();
     TestAnimation();
-    // TestDisplayInput();
-    // TestAdjustRate();
+    TestDisplayInput();
+    TestAdjustRate();
     return 0;
 }
